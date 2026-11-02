@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f3efe6;
+  --color-paper-deep: #e4dccb;
+  --color-card: #fbf9f4;
+  --color-ink: #1a1814;
+  --color-ink-soft: #5e574c;
+  --color-rule: #d9d0c2;
+  --color-stamp: #8c2f2b;
+  --color-paid: #1d6b45;
+  --color-sent: #1d4e89;
+  --color-gold: #a6843d;
+  --color-sidebar: #16140f;
+  --font-sans: var(--font-outfit), "Outfit", sans-serif;
+  --font-serif: var(--font-fraunces), "Fraunces", Georgia, serif;
+}
+
+html {
+  background: var(--color-paper);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+@layer components {
+  .eyebrow {
+    @apply text-[0.72rem] font-medium tracking-[0.16em] text-ink-soft uppercase;
+  }
+
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply bg-ink text-paper hover:bg-ink/85;
+  }
+
+  .btn-secondary {
+    @apply border border-rule bg-card text-ink hover:border-ink/30;
+  }
+
+  .btn-danger {
+    @apply border border-stamp/30 bg-card text-stamp hover:bg-stamp/5;
+  }
+
+  .field {
+    @apply grid gap-1.5 text-sm;
+  }
+
+  .field span {
+    @apply font-medium text-ink;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    @apply w-full rounded-md border border-rule bg-white px-3 py-2 text-ink outline-none placeholder:text-ink-soft/60 focus:border-ink;
+  }
+
+  .field textarea {
+    @apply min-h-24 resize-y;
+  }
+
+  .card {
+    @apply rounded-xl border border-rule bg-card;
+  }
+
+  .sheet {
+    @apply border border-rule bg-white px-6 py-8 shadow-[0_18px_50px_rgba(26,24,20,0.08)] sm:px-10 sm:py-10;
+  }
+
+  .data-table {
+    @apply w-full border-collapse text-sm;
+  }
+
+  .data-table th {
+    @apply border-b border-ink px-3 py-2 text-left text-[0.72rem] font-medium tracking-[0.14em] text-ink-soft uppercase;
+  }
+
+  .data-table td {
+    @apply border-b border-rule px-3 py-3 align-middle;
+  }
+
+  .data-table tr:hover td {
+    @apply bg-white/70;
+  }
+}
