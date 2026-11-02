@@ -1,0 +1,14 @@
+services:
+  daybook:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: file:/data/daybook.db
+      APP_TIMEZONE: Africa/Lagos
+      PAYMENT_LINKS_ENABLED: "false"
+    volumes:
+      - daybook-data:/data
+
+volumes:
+  daybook-data:
