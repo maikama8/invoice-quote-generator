@@ -1,0 +1,47 @@
+{
+  "name": "daybook",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Quotes and invoices with VAT, multi-currency totals, and PDF export",
+  "license": "MIT",
+  "author": "Abdulrasheed Oseni (https://github.com/maikama8)",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:setup": "prisma migrate deploy && prisma db seed",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "@react-pdf/renderer": "^4.3.1",
+    "better-sqlite3": "^12.6.2",
+    "dotenv": "^18.0.9",
+    "next": "16.4.4",
+    "prisma": "^7.10.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.4",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^4.0.18"
+  }
+}

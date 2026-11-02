@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model BusinessSettings {
+  id                Int      @id @default(1)
+  legalName         String
+  tradingName       String
+  email             String
+  phone             String
+  address           String
+  website           String   @default("")
+  tin               String   @default("")
+  logoDataUrl       String   @default("")
+  defaultCurrency   String   @default("NGN")
+  taxName           String   @default("VAT")
+  taxRateBps        Int      @default(750)
+  invoicePrefix     String   @default("INV")
+  quotePrefix       String   @default("QT")
+  numberWidth       Int      @default(4)
+  paymentTermsDays  Int      @default(14)
+  footerNote        String   @default("")
+  bankName          String   @default("")
+  bankAccountName   String   @default("")
+  bankAccountNumber String   @default("")
+  paymentProvider   String   @default("none")
+  updatedAt         DateTime @updatedAt
+}
+
+model Client {
+  id        String    @id @default(cuid())
+  name      String
+  company   String    @default("")
+  email     String    @default("")
+  phone     String    @default("")
+  address   String    @default("")
+  city      String    @default("")
+  country   String    @default("Nigeria")
+  notes     String    @default("")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  quotes    Quote[]
+  invoices  Invoice[]
+
+  @@index([name])
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  sku            String   @unique
+  name           String
+  description    String   @default("")
+  unitPriceMinor BigInt
+  currency       String
+  unit           String   @default("item")
+  taxable        Boolean  @default(true)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Quote {
+  id                 String      @id @default(cuid())
+  number             String      @unique
+  clientId           String
+  client             Client      @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  status             String
+  currency           String
+  issueDate          String
+  validUntil         String
+  taxName            String
+  taxRateBps         Int
+  discountKind       String
+  discountBps        Int         @default(0)
+  discountMinor      BigInt      @default(0)
+  notes              String      @default("")
+  terms              String      @default("")
+  subtotalMinor      BigInt
+  discountTotalMinor BigInt
+  taxMinor           BigInt
+  totalMinor         BigInt
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  lines              QuoteLine[]
+  invoice            Invoice?
+
+  @@index([clientId])
+  @@index([status])
+}
+
+model QuoteLine {
+  id             String  @id @default(cuid())
+  quoteId        String
+  quote          Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  position       Int
+  productId      String?
+  description    String
+  quantityMilli  Int
+  unitPriceMinor BigInt
+  taxable        Boolean
+  amountMinor    BigInt
+
+  @@index([quoteId])
+}
+
+model Invoice {
+  id                 String        @id @default(cuid())
+  number             String        @unique
+  clientId           String
+  client             Client        @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  quoteId            String?       @unique
+  quote              Quote?        @relation(fields: [quoteId], references: [id])
+  status             String
+  currency           String
+  issueDate          String
+  dueDate            String
+  paidAt             String?
+  taxName            String
+  taxRateBps         Int
+  discountKind       String
+  discountBps        Int           @default(0)
+  discountMinor      BigInt        @default(0)
+  notes              String        @default("")
+  terms              String        @default("")
+  subtotalMinor      BigInt
+  discountTotalMinor BigInt
+  taxMinor           BigInt
+  totalMinor         BigInt
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  lines              InvoiceLine[]
+
+  @@index([clientId])
+  @@index([status])
+}
+
+model InvoiceLine {
+  id             String  @id @default(cuid())
+  invoiceId      String
+  invoice        Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  position       Int
+  productId      String?
+  description    String
+  quantityMilli  Int
+  unitPriceMinor BigInt
+  taxable        Boolean
+  amountMinor    BigInt
+
+  @@index([invoiceId])
+}
